@@ -61,6 +61,7 @@ public class TestLinker extends NativeTestHelper {
         MethodHandle mh1 = linker.downcallHandle(l1.descriptor(), l1.options());
         MethodHandle mh2 = linker.downcallHandle(l2.descriptor(), l2.options());
         // assert that these are 2 distinct link request. No caching allowed
+        System.out.println(">>>>>>>>>>>>>>>64<<<<<<<<<<<<<<<<<");
         assertNotSame(mh1, mh2);
     }
 
@@ -80,6 +81,7 @@ public class TestLinker extends NativeTestHelper {
         MethodHandle mh1 = linker.downcallHandle(f1);
         MethodHandle mh2 = linker.downcallHandle(f2);
         // assert that these are the same link request, even though layout names differ
+        System.out.println(">>>>>>>>>>>>>>>84<<<<<<<<<<<<<<<<<");
         assertSame(mh1, mh2);
     }
 
@@ -134,12 +136,14 @@ public class TestLinker extends NativeTestHelper {
     public void testInvalidOption(int invalidIndex) {
         Linker.Option option = Linker.Option.firstVariadicArg(invalidIndex);
         FunctionDescriptor desc = FunctionDescriptor.ofVoid();
+        System.out.println(">>>>>>>>>>>>>>>139<<<<<<<<<<<<<<<<<");
         Linker.nativeLinker().downcallHandle(desc, option); // throws
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,
           expectedExceptionsMessageRegExp = ".*Unknown name.*")
     public void testInvalidPreservedValueName() {
+        System.out.println(">>>>>>>>>>>>>>>146<<<<<<<<<<<<<<<<<");
         Linker.Option.captureCallState("foo"); // throws
     }
 
@@ -147,6 +151,7 @@ public class TestLinker extends NativeTestHelper {
     public void testCanonicalLayouts(String typeName) {
         MemoryLayout layout = LINKER.canonicalLayouts().get(typeName);
         assertNotNull(layout);
+        System.out.println(">>>>>>>>>>>>>>>154<<<<<<<<<<<<<<<<<");
         assertTrue(layout instanceof ValueLayout);
     }
 
@@ -158,6 +163,7 @@ public class TestLinker extends NativeTestHelper {
         FunctionDescriptor fd = FunctionDescriptor.of(struct, struct);
         Linker linker = Linker.nativeLinker();
         var x = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>166<<<<<<<<<<<<<<<<<");
         assertTrue(x.getMessage().contains("not supported because a sequence of a padding layout is not allowed"));
     }
 
@@ -168,6 +174,7 @@ public class TestLinker extends NativeTestHelper {
         FunctionDescriptor fd = FunctionDescriptor.of(struct, struct);
         Linker linker = Linker.nativeLinker();
         var x = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>177<<<<<<<<<<<<<<<<<");
         assertTrue(x.getMessage().contains("is non-empty and only has padding layouts"));
     }
 
@@ -181,6 +188,7 @@ public class TestLinker extends NativeTestHelper {
 
         var fd = FunctionDescriptor.of(struct, struct, struct);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>191<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(),
                 "The padding layout x2 was preceded by another padding layout x1 in " + struct);
     }
@@ -199,6 +207,7 @@ public class TestLinker extends NativeTestHelper {
         var struct = MemoryLayout.structLayout(JAVA_BYTE, padding1, padding2, padding4, padding8, padding16, union);
         var fd = FunctionDescriptor.of(struct, struct, struct);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>210<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(),
                 "The padding layout x2 was preceded by another padding layout x1 in " + struct);
     }
@@ -209,6 +218,7 @@ public class TestLinker extends NativeTestHelper {
         var union = MemoryLayout.unionLayout(MemoryLayout.paddingLayout(3), ValueLayout.JAVA_INT);
         var fd = FunctionDescriptor.of(union, union, union);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>221<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(), "Superfluous padding x3 in " + union);
     }
 
@@ -218,6 +228,7 @@ public class TestLinker extends NativeTestHelper {
         var union = MemoryLayout.unionLayout(MemoryLayout.paddingLayout(4), ValueLayout.JAVA_INT);
         var fd = FunctionDescriptor.of(union, union, union);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>231<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(), "Superfluous padding x4 in " + union);
     }
 
@@ -227,6 +238,7 @@ public class TestLinker extends NativeTestHelper {
         var union = MemoryLayout.unionLayout(MemoryLayout.paddingLayout(5), ValueLayout.JAVA_INT);
         var fd = FunctionDescriptor.of(union, union, union);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>241<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(), "Layout '" + union + "' has unexpected size: 5 != 4");
     }
 
@@ -240,6 +252,7 @@ public class TestLinker extends NativeTestHelper {
                 MemoryLayout.paddingLayout(16));
         var fd = FunctionDescriptor.of(union, union, union);
         var e = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+        System.out.println(">>>>>>>>>>>>>>>255<<<<<<<<<<<<<<<<<");
         assertEquals(e.getMessage(), "More than one padding in " + union);
     }
 
@@ -254,7 +267,7 @@ public class TestLinker extends NativeTestHelper {
         if (linker.getClass().equals(FallbackLinker.class)) {
             // The fallback linker does not support empty layouts (FFI_BAD_TYPEDEF)
             var iae = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
-            System.out.println(">>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<");
+            System.out.println(">>>>>>>>>>>>>>>270<<<<<<<<<<<<<<<<<");
             assertTrue(iae.getMessage().contains("is empty"));
         } else {
             linker.downcallHandle(fd);
@@ -280,6 +293,7 @@ public class TestLinker extends NativeTestHelper {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testCanonicalLayoutsUnmodifiable() {
+        System.out.println(">>>>>>>>>>>>>>>296<<<<<<<<<<<<<<<<<");
         LINKER.canonicalLayouts().put("asdf", C_INT);
     }
 }
