@@ -272,6 +272,8 @@ public class TestLinker extends NativeTestHelper {
             var iae = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
             assertTrue(iae.getMessage().contains("is empty"));
         } else {
+            System.out.println(">>>>>>>>>>>>>>>275<<<<<<<<<<<<<<<<<");
+            System.out.println(linker.downcallHandle(fd));
             linker.downcallHandle(fd);
         }
     }
