@@ -163,7 +163,7 @@ public class TestLinker extends NativeTestHelper {
         FunctionDescriptor fd = FunctionDescriptor.of(struct, struct);
         Linker linker = Linker.nativeLinker();
         var x = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
-        System.out.println(">>>>>>>>>>>>>>>166<<<<<<<<<<<<<<<<<");
+        System.out.println(x);
         assertTrue(x.getMessage().contains("not supported because a sequence of a padding layout is not allowed"));
     }
 
@@ -273,7 +273,6 @@ public class TestLinker extends NativeTestHelper {
             assertTrue(iae.getMessage().contains("is empty"));
         } else {
             System.out.println(">>>>>>>>>>>>>>>275<<<<<<<<<<<<<<<<<");
-            System.out.println(linker.downcallHandle(fd));
             linker.downcallHandle(fd);
         }
     }
