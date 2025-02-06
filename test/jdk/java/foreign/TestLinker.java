@@ -268,6 +268,8 @@ public class TestLinker extends NativeTestHelper {
         if (linker.getClass().equals(FallbackLinker.class)) {
             // The fallback linker does not support empty layouts (FFI_BAD_TYPEDEF)
             var iae = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
+            System.out.println(">>>>>>>>>>>>>>>271<<<<<<<<<<<<<<<<<");
+            System.out.println(linker.downcallHandle(fd));
             assertTrue(iae.getMessage().contains("is empty"));
         } else {
             linker.downcallHandle(fd);
