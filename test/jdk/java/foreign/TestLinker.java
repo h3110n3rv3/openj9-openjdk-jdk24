@@ -157,13 +157,14 @@ public class TestLinker extends NativeTestHelper {
 
     @Test
     public void embeddedPaddingLayout() {
+        System.out.println(">>>>>>>>>>>>>>>160<<<<<<<<<<<<<<<<<");
         PaddingLayout padding = MemoryLayout.paddingLayout(64).withByteAlignment(64);
         SequenceLayout sequence = MemoryLayout.sequenceLayout(2, padding);
         StructLayout struct = MemoryLayout.structLayout(sequence);
         FunctionDescriptor fd = FunctionDescriptor.of(struct, struct);
         Linker linker = Linker.nativeLinker();
         var x = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
-        System.out.println(x);
+        System.out.println(">>>>>>>>>>>>>>>166<<<<<<<<<<<<<<<<<");
         assertTrue(x.getMessage().contains("not supported because a sequence of a padding layout is not allowed"));
     }
 
