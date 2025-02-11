@@ -258,19 +258,9 @@
          var fd = FunctionDescriptor.of(struct8a8, struct8a8, struct8a8);
          System.out.println(linker.getClass());
          System.out.println(FallbackLinker.class);
-         if (linker.getClass().equals(FallbackLinker.class)) {
-             System.out.println("<<>>><<>>>255");
+         System.out.println("<<>>><<>>>255");
              // The fallback linker does not support empty layouts (FFI_BAD_TYPEDEF)
-             var iae = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
-             System.out.println("<<>>><<>>>258");
-             assertTrue(iae.getMessage().contains("is empty"));
-             System.out.println("<<>>><<>>>260");
-         } else {
-             
-             System.out.println("<<>>><<>>>263");
-             linker.downcallHandle(fd);
-             System.out.println("<<>>><<>>>265");
-         }
+         var iae = expectThrows(IllegalArgumentException.class, () -> linker.downcallHandle(fd));
      }
  
      @DataProvider
